@@ -3,9 +3,10 @@ class Oystercard
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
 
-  def initialize
+  def initialize(journey=Journey.new)
     @exit_station = nil
-    @journeys = []
+    @journey = journey
+    @journeys = @journey.journeys
     @entry_station = nil
     @balance = 0
   end
@@ -18,12 +19,12 @@ class Oystercard
   def touch_in(station)
     @entry_station = station
     raise 'you dont have enough credit' if @balance < MINIMUM_FARE
-    @journeys.push(entry_station: station)
+    @journey.add_entry(station)
   end
 
   def touch_out(station)
     deduct(MINIMUM_FARE)
-    @journeys.last[:exit_station] = station
+    @journey.add_exit(station)
     @entry_station = nil
   end
 
