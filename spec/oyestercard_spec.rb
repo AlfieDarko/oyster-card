@@ -1,8 +1,8 @@
-require 'oyestercard'
+require 'oystercard'
 
-describe Oyestercard do
-  maximum_balance = Oyestercard::MAXIMUM_BALANCE
-  minimum_fare = Oyestercard::MINIMUM_FARE
+describe Oystercard do
+  maximum_balance = Oystercard::MAXIMUM_BALANCE
+  minimum_fare = Oystercard::MINIMUM_FARE
   let(:fake_entry_station) { double }
   let(:fake_exit_station) { double }
 
@@ -55,6 +55,8 @@ describe Oyestercard do
       expect(subject).not_to be_in_journey
     end
     it 'charging for the journey' do
+      subject.top_up(50)
+      subject.touch_in(fake_entry_station)
       expect { subject.touch_out(fake_exit_station) }.to change { subject.balance }.by(-minimum_fare)
     end
 
@@ -76,6 +78,8 @@ describe Oyestercard do
       expect(subject.in_journey?).to eq(true)
     end
     it 'shows the status when you are not in journey' do
+      subject.top_up(50)
+      subject.touch_in(fake_entry_station)
       subject.touch_out(fake_exit_station)
       expect(subject.in_journey?).to eq(false)
     end
