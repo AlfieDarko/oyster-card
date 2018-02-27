@@ -1,5 +1,5 @@
 class Oyestercard
-  attr_accessor :balance, :journeys
+  attr_accessor :balance, :journeys, :entry_station, :exit_station
   MAXIMUM_BALANCE = 90
   MINIMUM_FARE = 1
 
