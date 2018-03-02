@@ -10,22 +10,29 @@ class Journey
   end
 
   def add_entry(station)
-    @journeys.push(entry_station: station)
+    @journeys << { entry_station: station.name, entry_zone: station.zone }
   end
 
   def add_exit(station)
-    @journeys.last[:exit_station] = station
+    @journeys.last[:exit_station] = station.name
+    @journeys.last[:exit_zone] = station.zone
   end
 
   def fare
-    if @journeys[-1].key?(:entry_station) && @journeys[-1].key?(:exit_station)
-      MINIMUM_FARE
-    else
-      PENALTY_FARE
-    end
+    regular_fare + (@journeys.last[:entry_zone] - @journeys.last[:exit_zone]).to_i.abs
   end
 
   def in_journey?
     @journeys.last[:entry_station] != nil
   end
+
+  private
+
+  def regular_fare
+    if @journeys[-1].key?(:entry_station) && @journeys[-1].key?(:exit_station)
+      MINIMUM_FARE
+    else
+      PENALTY_FARE
+    end
+   end
 end
